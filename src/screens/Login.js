@@ -19,7 +19,10 @@ const db = SQLite.openDatabase(
 
 const Login = ({navigation}) => {
 
-  const { name, age } = useSelector(state => state.userReducer)
+  // const { name, age } = useSelector(state => state.rootReducer)
+  const name = useSelector(state => state.name)
+  const age = useSelector(state => state.age)
+
   const dispatch = useDispatch();
 
   /* const [name, setName] = useState('')
@@ -105,10 +108,10 @@ const Login = ({navigation}) => {
 
   return (
     <View style={styles.body}>  
-      <Image
+     {/*  <Image
         style={styles.logo}
         source={require('../../assets/react-redux.png')}
-      />
+      />  */}
       <Text style={styles.text}>
         Redux
       </Text>

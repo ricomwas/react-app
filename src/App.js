@@ -9,7 +9,7 @@ import Login from './screens/Login';
 import Home from './screens/Home'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Provider } from 'react-redux';
-import { store } from './redux/store';
+import Store   from './redux/store';
 
   
 
@@ -24,7 +24,7 @@ import { store } from './redux/store';
 const App = () => {
 
   return (
-    <Provider store={store}>
+    <Provider store={Store}>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Login"

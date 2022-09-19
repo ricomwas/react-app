@@ -9,12 +9,13 @@ import {
     View,
     Pressable,
     TextInput,
-    Alert
+    Alert,
+    FlatList
   } from 'react-native';
 import CustomButton from '../utils/CustomButton';
 import SQLite from 'react-native-sqlite-storage'
 import { useSelector, useDispatch } from 'react-redux'
-import { setName, setAge } from '../redux/actions'
+import { setName, setAge, increaseAge, getCities } from '../redux/actions'
 
 const db = SQLite.openDatabase(
   {
@@ -27,7 +28,11 @@ const db = SQLite.openDatabase(
  
 
 const Home = ({navigation, route}) => {
-  const { name, age } = useSelector(state => state.userReducer)
+  // const { name, age } = useSelector(state => state.rootReducer)
+  const name = useSelector(state => state.name)
+  const age = useSelector(state => state.age)
+  const cities = useSelector(state => state.cities)
+
   const dispatch = useDispatch();
 
   /* const [name, setName] = useState('');
@@ -35,6 +40,7 @@ const Home = ({navigation, route}) => {
 
   useEffect(() => {
     getData();
+    dispatch(getCities());
   }, [])
 
   const getData = () => {
@@ -56,8 +62,8 @@ const Home = ({navigation, route}) => {
             if (len > 0) {
               var userName = results.rows.item(0).Name;
               var userAge = results.rows.item(0).Age;
-              dispatch(setName(name))
-              dispatch(setAge(age))
+              dispatch(setName(userName))
+              dispatch(setAge(userAge))
             }
           }
           
@@ -116,8 +122,20 @@ const Home = ({navigation, route}) => {
               }>
                 Welcome {name} !
             </Text>
+            
+            <FlatList
+              data={cities}
+              renderItem={({ item }) => ( 
+                <View style={styles.item}>
+                  <Text style={styles.title}>{item.country}</Text>
+                  <Text style={styles.subtitle}>{item.city}</Text>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            
+            /> 
 
-            <Text style={
+          {/*   <Text style={
               GlobalStyle.CustomFont
               }>
                 Your age is: {age} !
@@ -140,7 +158,13 @@ const Home = ({navigation, route}) => {
               color='#006400'
               onPressFunction={removeData}
             />
-        
+
+            <CustomButton
+              title='Increaase Age'
+              color='#0080ff'
+              onPressFunction={() => {dispatch(increaseAge())}}
+            />
+         */}
         </View>
     )
 }
@@ -149,15 +173,18 @@ const styles = StyleSheet.create({
      body: {
       flex: 1,
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      margin: 20
+      /* marginTop: 130,
+      marginBottom:700 */ 
+
     },
-    text: {
+    /* text: {
       fontSize: 40,
       fontWeight: 'bold',
       margin: 10,
       
-
-    },
+    }, */
     input: {
       width: 300,
       borderWidth: 1,
@@ -169,6 +196,30 @@ const styles = StyleSheet.create({
       marginTop: 130,
       marginBottom: 10     
   },
+  item: {
+    backgroundColor: '#ffffff',
+    borderWidth: 2,
+    borderCOlor: '#cccccc',
+    borderRadius: 5,
+    margin: 7,
+    width: 350,
+    justifyContent: 'center',
+    alignItems: 'center'
+
+  },
+  title: {
+    fontSize: 15,
+    margin: 10,
+    fontWeight: 'bold',
+    color: '#000'
+
+  },
+  subtitle: {
+    fontSize: 12,
+    margin: 10,
+    color: '#999999'
+
+  }
   
 });
 
